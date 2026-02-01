@@ -1,5 +1,196 @@
 valentine-for-des/
-├── index.html 
-├── intro.png        ← your “May I disturb you” image
-├── no.png           ← your NO reaction image
-└── from-eden.mp3    ← song file
+├── index.html   ← <!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Des 🖤</title>
+
+<style>
+:root{
+  --bg:#08070c;
+  --accent:#7b4cff;
+  --text:#f5f5f5;
+}
+
+*{
+  box-sizing:border-box;
+}
+
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:"Comic Sans MS", cursive;
+  overflow:hidden;
+}
+
+/* SHARED FULL SCREEN */
+.screen{
+  width:100vw;
+  height:100vh;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  padding:20px;
+}
+
+.hidden{
+  display:none;
+}
+
+/* BIG IMAGES */
+.big-img{
+  width:100%;
+  height:75vh;          /* THIS makes it BIG */
+  object-fit:contain;
+}
+
+/* BUTTONS */
+button{
+  padding:16px 34px;
+  border-radius:18px;
+  border:none;
+  font-size:18px;
+  cursor:pointer;
+}
+
+#startBtn,#yes{
+  background:var(--accent);
+  color:white;
+}
+
+#no{
+  background:#1f1b2b;
+  color:#d6ccff;
+  position:relative;
+}
+
+/* BUTTON AREA */
+.buttons{
+  margin-top:20px;
+  display:flex;
+  gap:20px;
+  justify-content:center;
+}
+
+/* VOLUME */
+.volume{
+  width:80%;
+  margin-top:15px;
+}
+
+/* NO POPUP IMAGE */
+#popup img{
+  width:200px;
+  margin-top:15px;
+}
+
+/* CONFETTI */
+.confetti{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  pointer-events:none;
+  z-index:999;
+}
+
+.confetti span{
+  position:absolute;
+  font-size:30px;
+  animation:fall linear forwards;
+}
+
+@keyframes fall{
+  from{transform:translateY(-10vh)}
+  to{transform:translateY(110vh)}
+}
+</style>
+</head>
+
+<body>
+
+<audio id="music" loop>
+  <source src="from-eden.mp3" type="audio/mpeg">
+</audio>
+
+<!-- INTRO SCREEN -->
+<div id="intro" class="screen">
+  <img src="intro.png" class="big-img" alt="Intro image">
+
+  <button id="startBtn" onclick="start()">Click to start</button>
+
+  <input class="volume" type="range" min="0" max="1" step="0.01" value="0.7"
+         oninput="music.volume=this.value">
+</div>
+
+<!-- MAIN SCREEN -->
+<div id="main" class="screen hidden">
+  <h1>Des, will you be my Valentine? 🖤</h1>
+
+  <div class="buttons">
+    <button id="yes" onclick="yesClicked()">Yes</button>
+    <button id="no" onmouseover="moveNo()">No</button>
+  </div>
+
+  <div id="popup"></div>
+
+  <p style="margin-top:25px">
+    🧸🍟<br>
+    I love you just the way I love my fries<br>
+    <b>From Samosa 😝</b>
+  </p>
+</div>
+
+<div id="confetti" class="confetti hidden"></div>
+
+<script>
+function start(){
+  intro.classList.add("hidden");
+  main.classList.remove("hidden");
+  music.volume = 0.7;
+  music.play();
+}
+
+function moveNo(){
+  const x = Math.random()*300 - 150;
+  const y = Math.random()*300 - 150;
+  no.style.transform = `translate(${x}px, ${y}px)`;
+
+  popup.innerHTML = `
+    <div>Choose wisely 👀</div>
+    <img src="no.png" alt="No image">
+  `;
+}
+
+function yesClicked(){
+  launchConfetti();
+  main.innerHTML = `
+    <h1>YAYYYY 🎉🖤</h1>
+    <h2>You’re officially my Valentine 😍</h2>
+    <p>From Samosa 🧸🍟</p>
+  `;
+}
+
+function launchConfetti(){
+  confetti.classList.remove("hidden");
+  confetti.innerHTML="";
+  const emojis=["💖","🧸","💜","🎉"];
+  for(let i=0;i<80;i++){
+    const e=document.createElement("span");
+    e.innerText=emojis[Math.floor(Math.random()*emojis.length)];
+    e.style.left=Math.random()*100+"vw";
+    e.style.animationDuration=(2+Math.random()*3)+"s";
+    confetti.appendChild(e);
+  }
+}
+</script>
+
+</body>
+</html>
+├── intro.png    ← FIRST photo you sent
+├── no.png       ← SECOND photo you sent
+└── from-eden.mp3
